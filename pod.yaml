@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: short-app # имя пода, нужно для того, чтобы можно было к нему обратиться через kubectl
+  labels: #нужны для связи пода с Service (у нас будет NodePort)
+    components: frontend
+spec: 
+  containers:
+    - name: short-app
+      image: antonlarichev/short-app
+      ports: # указываем порты, которые должны быть прокинуты из контейнера в под
+        - containerPort: 80
+      resources: # допустимые лимиты на контейнер
+        limits:
+          memory: "128Mi" # даем контейнеру не более 128 МБ
+          cpu: "1000m" # даем что контейнеру не более половины процессора
