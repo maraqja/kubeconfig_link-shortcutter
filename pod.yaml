@@ -7,7 +7,7 @@ metadata:
 spec: 
   containers:
     - name: short-app
-      image: antonlarichev/short-app
+      image: antonlarichev/short-api 
       ports: # указываем порты, которые должны быть прокинуты из контейнера в под
         - containerPort: 80
       resources: # допустимые лимиты на контейнер
