@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      components: posgtres
+      components: postgres
   template:
     metadata:
       labels:
-        components: posgtres
+        components: postgres
     spec:
       containers:
         - name: postgres
@@ -28,4 +28,12 @@ spec:
             limits:
               memory: "500Mi"
               cpu: "300m"
-        
+          volumeMounts: # Определяем что должно быть в volume
+            - name: postgres-data # Должно соответствовать названию созданного volume
+              mountPath: /var/lib/postgresql/data # Где хранятся данные в контейнере
+              subPath: postgres # Говорит в какую подпапку внутри нашего volume разместить данные
+      volumes: # Описываем volume для постгри
+        - name: postgres-data
+          persistentVolumeClaim: 
+            claimName: postgres-pvc # Связываем volume с PVC
+          
