@@ -1,0 +1,19 @@
+# Для того, чтобы после перезапуска пода не терялись данные БД
+# Persistent Volume - отдельный объект вне pod, где данные хранятся независимо от состояни пода
+# нужно использоваться Persistent Volume (он хранится за пределами пода в кластере)
+
+# Чтобы работать с PV нужно создать Persistent Volume Claim (PVC)
+# PV - запрос на выделение Volume для pod-а
+# Они описывают что нужно поду (количество места, тип доступа),
+# для того чтобы куб подобрал нужный PV
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes: 
+    - ReadWriteOnce # 1 инстанс может использовать
