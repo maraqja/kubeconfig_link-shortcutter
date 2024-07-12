@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: short-api-deployment
+spec:
+  replicas: 1
+  selector:  
+    matchLabels:
+      components: backend
+  template: 
+    metadata:
+      labels: #нужны для связи пода с Service (у нас будет NodePort)
+        components: backend
+    spec: 
+      containers:
+        - name: short-app
+          image: antonlarichev/short-api:v1.0
+          ports: # указываем порты, которые должны быть прокинуты из контейнера в под
+            - containerPort: 3000 
+          resources: # допустимые лимиты на контейнер
+            limits:
+              memory: "500Mi" # даем контейнеру не более 128 МБ
+              cpu: "200m" # даем что контейнеру не более половины процессора
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: short-api-secret
+                  key: DATABASE_URL

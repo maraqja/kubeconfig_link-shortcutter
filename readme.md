@@ -13,7 +13,17 @@ kubectl get all
 kubectl apply -f .
 
 kubectl describe pods short-app
+kubectl logs pods/short-api-deployment-6896db6cd9-6jr9v
 
 kubectl port-forward service/short-app-port 3000:3000
 kubectl port-forward deployment/short-app-deployment 3000:80
 kubectl port-forward pod/short-app-deployment-84d5999c6d-x4c79 3000:80
+
+![Alt text](image.png)
+
+<!-- Нужно выполнить миграцию по созданию таблицы в поде с постгрей (иначе будет 500 от бека)
+CREATE TABLE "Link" (
+	"id" serial NOT NULL,
+	"url" TEXT NOT NULL,
+	"hash" TEXT NOT NULL
+) -->

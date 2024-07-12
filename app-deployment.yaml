@@ -14,11 +14,11 @@ spec:
     spec: 
       containers:
         - name: short-app
-          image: antonlarichev/short-app:v1.0
+          image: antonlarichev/short-app:v1.4
           ports: # указываем порты, которые должны быть прокинуты из контейнера в под
             - containerPort: 80
           resources: # допустимые лимиты на контейнер
             limits:
               memory: "128Mi" # даем контейнеру не более 128 МБ
-              cpu: "200m" # даем что контейнеру не более половины процессора
+              cpu: "100m" # даем что контейнеру не более половины процессора
       
