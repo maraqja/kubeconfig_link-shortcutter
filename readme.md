@@ -4,9 +4,17 @@
 brew install socket_vmnet
 brew tap homebrew/services
 HOMEBREW=$(which brew) && sudo ${HOMEBREW} services start socket_vmnet
+
+mkdir -p ${HOMEBREW_PREFIX}/var/run
+sudo ${HOMEBREW_PREFIX}/opt/socket_vmnet/bin/socket_vmnet --vmnet-gateway=192.168.105.1 ${HOMEBREW_PREFIX}/var/run/socket_vmnet
 -->
 
 minikube start --driver qemu --network socket_vmnet
+
+<!--
+лагает, иногда перед придется написать
+rm -rf ~/.minikube
+ -->
 
 kubectl get all
 
@@ -19,6 +27,8 @@ kubectl port-forward service/short-app-port 3000:3000
 kubectl port-forward deployment/short-app-deployment 3000:80
 kubectl port-forward pod/short-app-deployment-84d5999c6d-x4c79 3000:80
 
+kubectl port-forward deployments/postgres-deployment 5432:5432
+
 ![Alt text](image.png)
 
 <!-- Нужно выполнить миграцию по созданию таблицы в поде с постгрей (иначе будет 500 от бека)
@@ -26,4 +36,5 @@ CREATE TABLE "Link" (
 	"id" serial NOT NULL,
 	"url" TEXT NOT NULL,
 	"hash" TEXT NOT NULL
-) -->
+)
+-->

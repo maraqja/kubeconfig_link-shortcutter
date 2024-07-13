@@ -27,8 +27,8 @@ spec:
               valueFrom: 
                 secretKeyRef: #указываем, что будем брать из секретов
                   name: postgres-secret
-                  key: POSTGRES_DB
-            - name: POSTGRES_USER
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
               valueFrom: 
                 secretKeyRef: #указываем, что будем брать из секретов
                   name: postgres-secret
