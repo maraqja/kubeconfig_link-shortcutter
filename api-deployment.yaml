@@ -31,6 +31,31 @@ spec:
             - name: test
               mountPath: /etc/test
               readOnly: true
+          livenessProbe: # работает на протяжении всей жизни контейнера
+            exec: 
+              command: # успешно выполненные команды имеют код 0 (проверить с помощью echo $?), неуспешные > 0
+                - curl
+                - --fail # с --fail если статус код >= 400, то код команды будет 1
+                - http://localhost:3000 # в идеале должен быть вообще отдельный эндпоинт для healthcheck-а
+            initialDelaySeconds: 120 # Столько ждем пока приложение инициализируется
+            periodSeconds: 5 # Далее каждый 5 секунду делаем curl
+            failureThreshold: 1 # Количество допустимых ошибок подряд, перед тем как мы скажем, что контейнер не работает
+          startupProbe: # Обеспечивает старт приложения (в течение 50 сек пытаемся проверить, что приложение стартануло) - после этого запускается livenessProbe
+            exec: 
+              command: 
+                - curl
+                - --fail 
+                - http://localhost:3000 
+            periodSeconds: 12 
+            failureThreshold: 10 
+          readinessProbe: # проверяет готов ли контейнер
+            exec: 
+              command: 
+                - curl
+                - --fail 
+                - http://localhost:3000 
+            periodSeconds: 12
+            failureThreshold: 10 
       volumes:
         - name: test
           configMap:

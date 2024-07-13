@@ -29,6 +29,8 @@ kubectl port-forward pod/short-app-deployment-84d5999c6d-x4c79 3000:80
 
 kubectl port-forward deployments/postgres-deployment 5432:5432
 
+kubectl exec -it short-api-deployment-6896db6cd9-f927x -- /bin/bash
+
 ![Alt text](image.png)
 
 <!-- Нужно выполнить миграцию по созданию таблицы в поде с постгрей (иначе будет 500 от бека)
