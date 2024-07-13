@@ -36,7 +36,7 @@ spec:
               command: # успешно выполненные команды имеют код 0 (проверить с помощью echo $?), неуспешные > 0
                 - curl
                 - --fail # с --fail если статус код >= 400, то код команды будет 1
-                - http://localhost:3000 # в идеале должен быть вообще отдельный эндпоинт для healthcheck-а
+                - http://localhost:3000/api # в идеале должен быть вообще отдельный эндпоинт для healthcheck-а
             initialDelaySeconds: 120 # Столько ждем пока приложение инициализируется
             periodSeconds: 5 # Далее каждый 5 секунду делаем curl
             failureThreshold: 1 # Количество допустимых ошибок подряд, перед тем как мы скажем, что контейнер не работает
@@ -45,7 +45,7 @@ spec:
               command: 
                 - curl
                 - --fail 
-                - http://localhost:3000 
+                - http://localhost:3000/api
             periodSeconds: 12 
             failureThreshold: 10 
           readinessProbe: # проверяет готов ли контейнер
@@ -53,7 +53,7 @@ spec:
               command: 
                 - curl
                 - --fail 
-                - http://localhost:3000 
+                - http://localhost:3000/api
             periodSeconds: 12
             failureThreshold: 10 
       volumes:
