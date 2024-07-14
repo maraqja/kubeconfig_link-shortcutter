@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: short-app-deployment
+  # namespace: my-namespace
+spec:
+  replicas: 2
+  selector:  
+    matchLabels:
+      components: frontend
+  template: 
+    metadata:
+      labels: #нужны для связи пода с Service (у нас будет NodePort)
+        components: frontend
+    spec: 
+      containers:
+        - name: short-app
+          image: antonlarichev/short-app:v1.4
+          ports: # указываем порты, которые должны быть прокинуты из контейнера в под
+            - containerPort: 80
+          resources: # допустимые лимиты на контейнер
+            limits:
+              memory: "128Mi" # даем контейнеру не более 128 МБ
+              cpu: "100m" # даем что контейнеру не более половины процессора
+      

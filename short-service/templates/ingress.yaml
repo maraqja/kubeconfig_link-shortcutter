@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+  annotations: # можно указать тут настройки самого nginx-а (так бы пршилось писать в конфиге самого nginx)
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+spec:
+  ingressClassName: nginx # указываем, что используем для маршрутизации
+  rules:
+  - host: demo.test
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: short-app-clusterip
+            port: 
+              number: 80
+      - pathType: Prefix # делаем эндпоинт в ингрессе для того, чтобы к нему можно было обращаться с фронта (нельзя ходить в под в кластере, тк фронт запускается на компе пользователя и запросы будут идти с компа пользователя, а на компе пользователя нет доступа в поды нашего кластера (только через ингресс-контроллер))
+        path: "/api"
+        backend:
+          service:
+            name: short-api-clusterip
+            port: 
+              number: 3000

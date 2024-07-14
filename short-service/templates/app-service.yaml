@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: short-app-clusterip
+spec: 
+  type: ClusterIP
+  ports: 
+    - port: 80 # Если без targetPort, то targetPort = port
+      protocol: TCP
+  selector: 
+    components: frontend
