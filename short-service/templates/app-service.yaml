@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: short-app-clusterip
+  name: {{ .Values.app.name }}-clusterip
 spec: 
   type: ClusterIP
   ports: 
-    - port: 80 # Если без targetPort, то targetPort = port
+    - port: {{ .Values.app.port }} # Если без targetPort, то targetPort = port
       protocol: TCP
   selector: 
-    components: frontend
+    components: {{ .Values.app.components }}

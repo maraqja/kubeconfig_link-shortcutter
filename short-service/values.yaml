@@ -1,1 +1,15 @@
-name: Dima
+# Выносим сюда переменные, которые много где повторяются
+# Чтобы можно было поменять в одном месте 
+# + файлов с values может быть несколько - один для дев, другой для прод
+
+app:
+  name: short-app
+  image: antonlarichev/short-app
+  version: 1.4
+  components: frontend
+  port: 80
+  replicas: 1
+  limits:
+    memory: "128Mi"
+    cpu: "100m"
+
