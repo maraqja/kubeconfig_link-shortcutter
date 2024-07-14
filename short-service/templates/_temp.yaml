@@ -1,0 +1,7 @@
+# Файлы, начинающиеся с _, helm не считает за конфигурацию кластера
+
+
+{{- define "chart.labels"}}
+date: {{ now | htmlDate }}
+version:  {{ .Values.app.version | toString | upper | quote }}
+{{- end}}
