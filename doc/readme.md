@@ -53,7 +53,5 @@ CREATE TABLE "Link" (
 helm install short-service-release short-service
 <!-- Если нужно посмотреть что подставит helm в файлы манифестов, то юзаем debug dry-run (не запуская при этом наш чарт на кластере) -->
 helm install --debug --dry-run short-service-release short-service/ 
-
-
 <!-- Накатить новый релиз -->
 helm upgrade short-service-release short-service/

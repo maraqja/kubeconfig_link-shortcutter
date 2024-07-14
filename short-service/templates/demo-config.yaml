@@ -1,0 +1,14 @@
+# Похож на секреты, но его можно подкладывать внутрь пода (примонитровать в контейнер)
+# Используется для прокидывания конфигурации (для всего, что конфигурируется не env-ами, а конфиг файлами) внутрь пода
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  name: {{ .Values.app.version | toString | upper | quote }}
+  {{- if eq .Values.env "production"}}
+  paymentToken: "1234"
+  {{- else }}
+  paymentToken: false
+  {{- end }} # добавляем - чтобы не было пустых строк в итоговом манифесте
