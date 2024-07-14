@@ -7,8 +7,29 @@ metadata:
   name: demo-config
 data:
   name: {{ .Values.app.version | toString | upper | quote }}
+  
+  # # if-else
   {{- if eq .Values.env "production"}}
   paymentToken: "1234"
   {{- else }}
   paymentToken: false
   {{- end }} # добавляем - чтобы не было пустых строк в итоговом манифесте
+
+
+
+  # # with
+  # memory: {{ .Values.value.requirements.limits.memory }}
+  # cpu: {{ .Values.value.requirements.limits.cpu }}
+  # # С помощью with даем указание искать значения в определенном свойстве
+  {{- with .Values.value.requirements.limits }}
+  memory: {{ .memory }}
+  cpu: {{ .cpu }}
+  version: {{ $.Values.app.version }} # Если нужно обратиться к самому корню в блоке with
+  {{- end }}
+
+
+  # # range
+  users:
+    {{- range .Values.users}} # указываем по какому массиву итерируемся
+    - {{ .name }}: {{.role}} # чтобы обратиться к элементу на текущей итерации используется .
+    {{- end }}
