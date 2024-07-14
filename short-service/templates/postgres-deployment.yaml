@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name:  {{ .Values.postgres.name }}-deployment
+  # namespace: my-namespace
+spec:
+  replicas: 1
+  selector:  
+    matchLabels:
+      components: {{ .Values.postgres.components }}
+  template: 
+    metadata:
+      labels: #нужны для связи пода с Service (у нас будет NodePort)
+        components: {{ .Values.postgres.components }}
+    spec: 
+      containers:
+        - name:  {{ .Values.postgres.name }}
+          image:  "{{ .Values.postgres.image }}:{{ .Values.postgres.version }}"
+          ports: # указываем порты, которые должны быть прокинуты из контейнера в под
+            - containerPort: {{ .Values.postgres.port }}
+          resources: # допустимые лимиты на контейнер
+            limits: {{ .Values.postgres.limits | toYaml | nindent 14 }} # Указываем, что нужно преобразовать в yaml и указываем кол-во отступов с помощью nindent
+          env:
+            {{- range .Values.postgres.envs}}
+            {{- $data := dict "name" $.Values.postgres.name "env" .}} # Создаем объект
+            {{- include "env.template" $data | indent 12}}
+            {{- end}}
+          volumeMounts: # Определяем что должно быть в volume
+            - name: "{{ .Values.postgres.name }}-data" # Должно соответствовать названию созданного volume
+              mountPath: /var/lib/postgresql/data # Где хранятся данные в контейнере
+              subPath: postgres # Говорит в какую подпапку внутри нашего volume разместить данные
+      volumes: # Описываем volume для постгри
+        - name: "{{ .Values.postgres.name }}-data"
+          persistentVolumeClaim: 
+            claimName: "{{ .Values.postgres.name }}-pvc" # Связываем volume с PVC
+          
+
+
+
+         
