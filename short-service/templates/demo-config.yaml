@@ -1,10 +1,19 @@
 # Похож на секреты, но его можно подкладывать внутрь пода (примонитровать в контейнер)
 # Используется для прокидывания конфигурации (для всего, что конфигурируется не env-ами, а конфиг файлами) внутрь пода
 
+
+{{- define "chart.labels"}}
+  labels: 
+    date: {{ now | htmlDate }}
+    version:  {{ .Values.app.version | toString | upper | quote }}
+{{- end}}
+
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: demo-config
+  {{- template "chart.labels" .}} # Обязательно передаем контекст, который доступен внутри template
 data:
   name: {{ .Values.app.version | toString | upper | quote }}
   
