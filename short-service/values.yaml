@@ -5,7 +5,7 @@
 app:
   name: short-app
   image: antonlarichev/short-app
-  version: 1.4
+  version: v1.4
   components: frontend
   port: 80
   replicas: 1
@@ -13,17 +13,30 @@ app:
     memory: "128Mi"
     cpu: "100m"
 
-env: test
-value:
-  requirements:
-    limits:
-      memory: "128Mi"
-      cpu: "100m"
+api:
+  name: short-api
+  image: antonlarichev/short-api
+  version: v1.0
+  components: backend
+  port: 3000
+  replicas: 1
+  limits:
+    memory: "500Mi"
+    cpu: "200m"
+  envs:  
+    - DATABASE_URL
 
 
-users: 
-  - name: Dima
-    role: admin
-  - name: Vasya
-    role: manager
+postgres:
+  name: postgres
+  image: antonlarichev/short-api
+  version: v1.0
+  components: backend
+  port: 5432
 
+database:
+  user: demo
+  password: demo
+  db: demo
+  host: postgres-clusterip
+  
