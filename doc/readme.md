@@ -53,5 +53,16 @@ CREATE TABLE "Link" (
 helm install short-service-release short-service
 <!-- Если нужно посмотреть что подставит helm в файлы манифестов, то юзаем debug dry-run (не запуская при этом наш чарт на кластере) -->
 helm install --debug --dry-run short-service-release short-service/ 
+<!-- Есть еще один способ "зарендерить" релиз  -->
+helm template test ./short-service
+<!-- Если нужно чекнуть уже то, что есть в кластере -->
+helm get all short-service-release
+
 <!-- Накатить новый релиз -->
-helm upgrade short-service-release short-service/
+helm upgrade short-service-release short-service
+<!-- Откат релиза (1 - номер ревизии) -->
+helm rollback short-app-release 1 
+
+
+helm uninstall short-service-release 
+

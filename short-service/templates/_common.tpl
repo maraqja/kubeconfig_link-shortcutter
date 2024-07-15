@@ -3,7 +3,7 @@
 {{- define "env.template"}}
 -  name: {{ .env }}
    valueFrom:
-        secretRef:
+        secretKeyRef:
             name: "{{ .name }}-secret"
             key: {{ .env }}
 {{- end}}
